@@ -4,11 +4,11 @@ pragma solidity ^0.8.30;
 import {Test, console2, StdStyle} from "forge-std/Test.sol";
 import {MultiSig} from "../src/MultiSigWallet.sol";
 
-contract MultiTest is Test{
+contract MultiTest is Test {
     MultiSig public wallet;
     address public alice;
     address public bob;
-    
+
     function setUp() public {
         alice = makeAddr("alice");
         bob = makeAddr("bob");
@@ -33,7 +33,8 @@ contract MultiTest is Test{
         bool isAliceOwner = wallet.isOwner(alice);
         assertTrue(isAliceOwner, "Alice should be an owner");
         wallet.submitTransaction(bob, 1 ether, "");
-        (address to, uint256 value, bytes memory data, bool executed, uint256 numConfirmations) = wallet.getTransaction(0);
+        (address to, uint256 value, bytes memory data, bool executed, uint256 numConfirmations) =
+            wallet.getTransaction(0);
         assertEq(to, bob);
         assertEq(value, 1 ether);
         assertEq(executed, false);
@@ -53,7 +54,7 @@ contract MultiTest is Test{
         vm.stopPrank();
 
         assertEq(wallet.getConfirmationsCount(0), 2);
-        vm.prank(alice);    
+        vm.prank(alice);
         wallet.executeTransaction(0);
     }
 
@@ -70,7 +71,5 @@ contract MultiTest is Test{
         vm.stopPrank();
 
         assertEq(wallet.getConfirmationsCount(0), 1);
-        
-        
     }
 }
